@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>CleanMetaDATA — Free Metadata Cleaner &amp; AI Tag Remover</title>
+
+  <!-- SEO -->
+  <meta name="description" content="Free, open-source metadata cleaner &amp; AI tag remover. Strip EXIF, GPS, XMP, IPTC, C2PA and AI fingerprints from JPG, PNG, WebP, and HEIC images. 100% in your browser. No upload. No signup." />
+  <meta name="keywords" content="metadata cleaner, metadata remover, exif remover, exif cleaner, strip metadata, remove ai tags, ai tag remover, c2pa remover, remove c2pa metadata, image metadata remover, image privacy, free metadata tool, open source exif cleaner, remove ai label instagram, stable diffusion metadata removal, remove geotag from photo, bypass ai image detection, automatic1111 metadata, midjourney metadata remover, dall-e metadata" />
+  <meta name="author" content="CleanMetaDATA" />
+  <meta name="robots" content="index, follow" />
+  <meta name="language" content="English" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="theme-color" content="#16140f" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="CleanMetaDATA" />
+  <meta name="apple-touch-fullscreen" content="yes" />
+  <link rel="canonical" href="https://clean-metadata.pages.dev/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="CleanMetaDATA" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:title" content="CleanMetaDATA — Free Metadata Cleaner &amp; AI Tag Remover" />
+  <meta property="og:description" content="Free metadata cleaner &amp; AI tag remover. Strip EXIF, GPS, XMP, C2PA and AI fingerprints from images in your browser. 100% free, open-source, no upload, no signup." />
+  <meta property="og:url" content="https://clean-metadata.pages.dev/" />
+  <meta property="og:image" content="https://clean-metadata.pages.dev/og-image.jpg" />
+  <meta property="og:image:alt" content="CleanMetaDATA — Free metadata cleaner and AI tag remover for images" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CleanMetaDATA — Free Metadata Cleaner &amp; AI Tag Remover" />
+  <meta name="twitter:description" content="Free metadata cleaner &amp; AI tag remover. Strip EXIF, GPS, XMP, C2PA and AI fingerprints from images. Runs in your browser. No upload, no signup." />
+  <meta name="twitter:image" content="https://clean-metadata.pages.dev/og-image.jpg" />
+  <meta name="twitter:image:alt" content="CleanMetaDATA — Free metadata cleaner and AI tag remover for images" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "CleanMetaDATA",
+    "url": "https://clean-metadata.pages.dev/",
+    "description": "Free, open-source metadata cleaner and AI tag remover. Strips EXIF, GPS, XMP, IPTC, C2PA and AI generator fingerprints from images entirely in your browser.",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any (browser-based)",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "EXIF metadata removal",
+      "GPS geotag removal",
+      "C2PA content credentials removal",
+      "Stable Diffusion parameter removal",
+      "AI generator signature removal",
+      "Image fingerprint alteration",
+      "100% client-side processing",
+      "No upload required"
+    ],
+    "screenshot": "https://clean-metadata.pages.dev/og-image.jpg",
+    "softwareVersion": "1.0",
+    "license": "https://opensource.org/licenses/MIT"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does my image actually leave my device?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Everything happens inside your browser tab. We have no server endpoint that receives image data — the code is open source and you can verify this yourself on GitHub."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will this remove the Made with AI label on Instagram?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CleanMetaDATA removes the C2PA Content Credentials and AI software tags that trigger the label. However, platforms update their detection without notice and some (like Instagram) can also detect AI content visually. There is no guarantee, but removing metadata is the correct first step."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can it remove Google SynthID watermarks?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. SynthID and similar invisible watermarks are embedded directly into pixel values — they are not metadata. No metadata cleaner can remove them, including ours."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does processing reduce image quality?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JPEG images are re-encoded at 92% quality, which is visually lossless for nearly all use cases. PNG files are exported losslessly. The pixel perturbation changes individual RGB values by a maximum of 2 points — completely imperceptible."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this really free? What is the catch?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Completely free, no limits, no account required. The project is MIT-licensed and hosted on GitHub Pages. There is no catch."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What image formats are supported?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "JPG/JPEG, PNG, WebP, and HEIC (iPhone photos). HEIC files are converted client-side using the heic2any library before processing."
+        }
+      }
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "How to Remove Metadata and AI Tags from Images",
+    "description": "Remove EXIF, GPS, C2PA and AI generator metadata from images entirely in your browser using CleanMetaDATA.",
+    "totalTime": "PT10S",
+    "tool": {
+      "@type": "HowToTool",
+      "name": "CleanMetaDATA (free, browser-based)"
+    },
+    "step": [
+      {
+        "@type": "HowToStep",
+        "position": 1,
+        "name": "Upload your image",
+        "text": "Drop your JPG, PNG, WebP, or HEIC image onto the upload area, or click to browse. Your file is loaded directly into browser memory — nothing is sent to a server."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 2,
+        "name": "Canvas re-render",
+        "text": "The image is drawn onto an HTML5 Canvas element and exported as a fresh file. The browser constructs the new file from raw pixels only, automatically discarding all metadata containers."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 3,
+        "name": "Fingerprint alteration",
+        "text": "A small number of pixels are shifted by ±1–2 RGB values. The change is invisible to the human eye but completely alters the file's perceptual hash, disrupting reverse-image search and duplicate detection."
+      },
+      {
+        "@type": "HowToStep",
+        "position": 4,
+        "name": "Download the clean image",
+        "text": "Click the download button to save your clean image. All image data is purged from browser memory immediately after download."
+      }
+    ]
+  }
+  </script>
+
+  <!-- Libraries (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" defer></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 16px;
+      z-index: 9999;
+      padding: 8px 16px;
+      background: var(--amber);
+      color: #16140f;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: top 0.1s;
+    }
+    .skip-link:focus { top: 8px; }
+
+    :focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+    button:focus-visible, a:focus-visible { border-radius: var(--radius); }
+
+    :root {
+      --white: #16140f;
+      --off-white: #1e1c16;
+      --paper: #252218;
+      --ink: #f2edd8;
+      --ink-light: #b8b49e;
+      --ink-faint: #8c8878;
+      --accent: #d97757;
+      --amber: #d97757;
+      --amber-light: rgba(217,119,87,0.10);
+      --amber-border: rgba(217,119,87,0.28);
+      --green: #4ade80;
+      --green-light: rgba(74,222,128,0.12);
+      --red: #f87171;
+      --red-light: rgba(248,113,113,0.12);
+      --border: #2c2a22;
+      --border-dark: #3a3830;
+      --radius: 4px;
+      --radius-lg: 12px;
+      --font-display: 'Libre Baskerville', Georgia, serif;
+      --font-body: 'Manrope', system-ui, sans-serif;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.25), 0 1px 2px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.20);
+      --shadow-lg: 0 20px 60px rgba(0,0,0,0.45), 0 4px 12px rgba(0,0,0,0.25);
+      --bg-deep: #0d0c08;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--white);
+      color: var(--ink);
+      line-height: 1.6;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(22,20,15,0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 3px solid var(--amber);
+      border-bottom: 1px solid var(--border);
+      padding: 0 max(24px, calc(50% - 580px));
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { font-style: italic; font-weight: 400; color: var(--amber); }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.825rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-github {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.825rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+      text-decoration: none;
+      border: 1px solid var(--border-dark);
+      padding: 6px 14px;
+      border-radius: var(--radius);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-github:hover { background: var(--paper); border-color: var(--amber); }
+    nav.scrolled {
+      border-bottom-color: rgba(44,42,34,0.8);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    }
+    .nav-github svg { opacity: 0.7; }
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px;
+      min-width: 44px;
+      min-height: 44px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius);
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 20px;
+      height: 1.5px;
+      background: var(--ink);
+      border-radius: 1px;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-hamburger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mobile-nav {
+      display: none;
+      padding: 4px max(24px, calc(50% - 580px)) 10px;
+      border-top: 1px solid var(--border);
+      background: rgba(22,20,15,0.98);
+    }
+    .mobile-nav.is-open { display: block; }
+    .mobile-nav a {
+      display: block;
+      padding: 11px 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .mobile-nav a:last-child { border-bottom: none; }
+    .mobile-nav a:hover { color: var(--ink); }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 0 max(24px, calc(50% - 580px));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      min-height: calc(100dvh - 59px);
+      gap: 60px;
+      background-image: radial-gradient(circle, #3a3830 1px, transparent 1px);
+      background-size: 28px 28px;
+    }
+    .hero-text {
+      padding: 64px 0;
+      max-width: none;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--amber);
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+      padding: 4px 10px;
+      border-radius: 99px;
+      margin-bottom: 24px;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: pulse-dot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.75); }
+    }
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 5.5vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 24px;
+      text-wrap: balance;
+    }
+    h1 em {
+      font-style: italic;
+      font-weight: 400;
+      color: var(--amber);
+    }
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink-light);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+    .hero-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-start;
+    }
+    .fact-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--ink-light);
+      border: 1px solid var(--border);
+      padding: 5px 12px;
+      border-radius: 99px;
+      transition: border-color 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s;
+    }
+    .fact-chip:hover { border-color: var(--border-dark); color: var(--ink); }
+    .fact-chip svg { flex-shrink: 0; }
+
+    /* ─── DROP ZONE ─── */
+    .tool-card {
+      background: var(--off-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      width: 100%;
+      position: relative;
+      transition: border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --mx: -200px;
+      --my: -200px;
+    }
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(500px circle at var(--mx) var(--my), rgba(217,119,87,0.12) 0%, transparent 55%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .tool-card > * { position: relative; z-index: 1; }
+    .tool-card:hover {
+      border-color: var(--border-dark);
+      transform: translateY(-2px);
+    }
+    .drop-zone {
+      border: 1.5px dashed var(--border-dark);
+      border-radius: var(--radius-lg);
+      padding: 40px 24px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
+      background: var(--white);
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--amber);
+      background: rgba(217,119,87,0.07);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+    .drop-icon {
+      width: 48px; height: 48px;
+      margin: 0 auto 16px;
+      background: var(--paper);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
+    }
+    .drop-zone:hover .drop-icon, .drop-zone.drag-over .drop-icon {
+      transform: translateY(-3px);
+      background: rgba(217,119,87,0.12);
+      border-color: var(--amber-border);
+    }
+    .drop-title {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .drop-sub {
+      font-size: 0.8rem;
+      color: var(--ink-faint);
+    }
+    .drop-formats {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      letter-spacing: 0.03em;
+    }
+
+    /* ─── PROCESSING STATE ─── */
+    #processing-panel { display: none; margin-top: 20px; }
+    #result-panel { display: none; margin-top: 20px; }
+
+    .file-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 8px;
+    }
+    .file-thumb {
+      width: 44px; height: 44px;
+      border-radius: 6px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--paper);
+      border: 1px solid var(--border);
+    }
+    .file-info { flex: 1; min-width: 0; }
+    .file-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--ink);
+    }
+    .file-size {
+      font-size: 0.75rem;
+      color: var(--ink-faint);
+      margin-top: 1px;
+    }
+
+    .status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 99px;
+      flex-shrink: 0;
+    }
+    .status-badge.processing {
+      background: rgba(217,119,87,0.15);
+      color: var(--amber);
+    }
+    .status-badge.done {
+      background: var(--green-light);
+      color: var(--green);
+    }
+    .status-badge.error {
+      background: var(--red-light);
+      color: var(--red);
+    }
+
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--ink);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    /* Metadata preview */
+    .meta-preview {
+      margin-top: 14px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .meta-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: var(--paper);
+    }
+    .meta-preview-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--ink-light);
+    }
+    .meta-count {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--red);
+      background: var(--red-light);
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+    .meta-count.clean { color: var(--green); background: var(--green-light); }
+
+    /* Highlight cards */
+    .meta-cards { padding: 10px; display: flex; flex-direction: column; gap: 7px; }
+    .meta-highlight-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 14px;
+      background: var(--paper);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .meta-highlight-card.sev-high { background: rgba(248,113,113,0.07); border-color: rgba(248,113,113,0.22); }
+    .meta-highlight-card.sev-med  { background: rgba(217,119,87,0.07); border-color: rgba(217,119,87,0.22); }
+    .meta-card-icon { font-size: 1.05rem; flex-shrink: 0; line-height: 1; padding-top: 2px; }
+    .meta-card-title { font-size: 0.82rem; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .meta-card-title.sev-high { color: var(--red); }
+    .meta-card-title.sev-med  { color: var(--amber); }
+    .meta-card-desc { font-size: 0.76rem; color: var(--ink-light); line-height: 1.5; }
+
+    /* Raw fields collapsible */
+    .meta-raw-details { border-top: 1px solid var(--border); }
+    .meta-raw-details summary {
+      padding: 7px 14px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+    .meta-raw-details summary::-webkit-details-marker { display: none; }
+    .meta-raw-details[open] summary { color: var(--ink-light); }
+
+    /* Raw table */
+    .meta-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .meta-table tr:not(:last-child) td { border-bottom: 1px solid var(--border); }
+    .meta-table td { padding: 6px 14px; vertical-align: top; }
+    .meta-table td:first-child { font-weight: 500; color: var(--ink-light); width: 38%; white-space: nowrap; }
+    .meta-table td:last-child {
+      color: var(--ink);
+      word-break: break-all;
+      font-family: ui-monospace, 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.74rem;
+    }
+
+    /* Download button */
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px;
+      background: var(--ink);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+      margin-top: 12px;
+      overflow: hidden;
+    }
+    .btn-download:hover { background: var(--amber); color: #16140f; }
+    .btn-download:active { transform: translateY(1px) scale(0.99); }
+
+    .btn-reset {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px;
+      background: transparent;
+      color: var(--ink-light);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      font-weight: 400;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-reset:hover { background: var(--paper); color: var(--ink); }
+
+    /* Clean summary */
+    .clean-summary {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--green-light);
+      border: 1px solid rgba(74,222,128,0.28);
+      border-radius: var(--radius-lg);
+      margin-top: 14px;
+    }
+    .clean-summary-icon {
+      width: 28px; height: 28px;
+      background: var(--green);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .clean-summary-text {
+      font-size: 0.82rem;
+      color: var(--green);
+      font-weight: 400;
+    }
+    .clean-summary-text strong { font-weight: 600; }
+
+    /* Progress bar */
+    .progress-wrap {
+      height: 2px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 14px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--ink);
+      border-radius: 2px;
+      transition: width 0.4s ease-out;
+    }
+
+    /* ─── MARQUEE STRIP ─── */
+    .marquee-strip {
+      overflow: hidden;
+      background: var(--ink);
+      padding: 12px 0;
+      user-select: none;
+    }
+    .marquee-inner {
+      display: flex;
+      gap: 0;
+      width: max-content;
+      animation: marquee-scroll 32s linear infinite;
+    }
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .marquee-inner span {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(217,119,87,0.7);
+      white-space: nowrap;
+      padding: 0 20px;
+    }
+    .marquee-inner .marquee-sep {
+      color: rgba(242,237,216,0.10);
+      padding: 0;
+      letter-spacing: 0;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .marquee-inner { animation: none; }
+    }
+
+    /* ─── SECTIONS SHARED ─── */
+    section {
+      padding: 88px max(24px, calc(50% - 580px));
+    }
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 16px;
+      text-wrap: balance;
+    }
+    .section-title em { font-style: italic; font-weight: 400; color: var(--amber); }
+    .section-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ink-light);
+      max-width: 500px;
+      line-height: 1.7;
+    }
+
+    /* ─── WHAT WE REMOVE ─── */
+    .removes-section { background: var(--paper); }
+    .removes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 48px;
+      border-top: 1px solid var(--border-dark);
+      list-style: none;
+    }
+    .remove-item {
+      padding: 20px 28px 20px 0;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+      column-gap: 14px;
+      row-gap: 3px;
+      background: transparent;
+      transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .remove-item:nth-child(odd) {
+      border-right: 1px solid var(--border);
+      padding-right: 28px;
+    }
+    .remove-item:nth-child(even) { padding-left: 28px; }
+    .remove-item:hover { background: var(--amber-light); }
+    .remove-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      border-radius: 3px;
+      grid-row: 1 / 3;
+      align-self: start;
+      margin-top: 2px;
+    }
+    .tag-exif { background: #e0e7ff; color: #3730a3; }
+    .tag-gps-badge { background: #fee2e2; color: #991b1b; }
+    .tag-xmp { background: #fef9c3; color: #713f12; }
+    .tag-iptc { background: #f3e8ff; color: #6b21a8; }
+    .tag-c2pa { background: #fce7f3; color: #9d174d; }
+    .tag-sd { background: #ecfdf5; color: #065f46; }
+    .tag-ai { background: #f0f9ff; color: #0c4a6e; }
+    .tag-hash { background: var(--paper); color: var(--ink-light); }
+    .remove-name {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ink);
+      grid-column: 2;
+      grid-row: 1;
+      align-self: end;
+    }
+    .remove-desc {
+      font-size: 0.78rem;
+      color: var(--ink-light);
+      line-height: 1.5;
+      font-weight: 300;
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-section {
+      background: var(--paper);
+      border-top: none;
+    }
+    .how-section .section-sub { color: var(--ink-light); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      margin-top: 56px;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .step {
+      padding: 36px 28px 32px;
+      background: var(--off-white);
+      border-right: 1px solid var(--border);
+      position: relative;
+      transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .step:hover { background: rgba(217,119,87,0.07); }
+    .step:last-child { border-right: none; }
+    .step-num {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 7vw, 8rem);
+      font-weight: 700;
+      color: var(--border-dark);
+      line-height: 0.85;
+      margin-bottom: 20px;
+      letter-spacing: -0.04em;
+      user-select: none;
+      margin-left: -4px;
+    }
+    .step-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .step-desc {
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      line-height: 1.65;
+      font-weight: 300;
+    }
+
+    /* ─── FAQ ─── */
+    .faq-section { background: var(--off-white); border-top: 1px solid var(--border); }
+    .faq-layout {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .faq-header { position: sticky; top: 80px; padding-bottom: 24px; }
+    .faq-header .section-title { margin-bottom: 12px; }
+    .faq-header .section-sub { font-size: 0.9rem; }
+    .faq-list { margin-top: 0; max-width: none; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      text-align: left;
+      padding: 18px 0;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq-question { transition: color 0.15s; }
+    .faq-question:hover { color: var(--amber); }
+    .faq-icon {
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      border: 1px solid var(--border-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ink-light);
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0;
+      font-size: 0.875rem;
+      color: var(--ink-light);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 560px;
+      transition: max-height 0.28s ease-out, padding 0.28s ease-out;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 320px;
+      padding: 0 0 18px;
+    }
+
+    /* ─── OPEN SOURCE CTA ─── */
+    .oss-section {
+      background: var(--bg-deep);
+      color: var(--ink);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .oss-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 280px;
+      opacity: 0.08;
+      mix-blend-mode: overlay;
+    }
+    .oss-section > * { position: relative; z-index: 1; }
+    .oss-section .section-title {
+      color: var(--ink);
+      font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+      margin-bottom: 20px;
+    }
+    .oss-section .section-title em { color: var(--amber); }
+    .oss-section .section-sub { color: var(--ink-faint); margin: 0 auto 40px; }
+    .oss-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-oss-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: var(--amber);
+      color: #16140f;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
+    }
+    .btn-oss-primary:hover { opacity: 0.88; }
+    .btn-oss-primary:active { transform: translateY(1px) scale(0.99); }
+    .btn-oss-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: transparent;
+      color: var(--ink-light);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 400;
+      border: 1px solid var(--border-dark);
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-oss-secondary:hover { border-color: var(--amber); color: var(--ink); }
+    .oss-stats {
+      display: flex;
+      gap: 64px;
+      justify-content: center;
+      margin-top: 56px;
+      padding-top: 44px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .oss-stat-num {
+      font-family: var(--font-display);
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: var(--amber);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .oss-stat-label {
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      margin-top: 6px;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px max(24px, calc(50% - 580px));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      background: var(--bg-deep);
+    }
+    .footer-logo {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .footer-logo span { font-style: italic; font-weight: 400; color: var(--amber); }
+    .footer-copy {
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+    }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+    .footer-links a {
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--ink); }
+
+    /* ─── ERROR STATE ─── */
+    #error-panel { display: none; }
+    .error-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px;
+      background: var(--red-light);
+      border: 1px solid rgba(248,113,113,0.25);
+      border-radius: var(--radius-lg);
+      margin-bottom: 8px;
+    }
+    .error-icon { flex-shrink: 0; color: var(--red); margin-top: 1px; }
+    .error-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .error-desc {
+      font-size: 0.8rem;
+      color: var(--ink-light);
+      line-height: 1.5;
+    }
+
+    /* ─── SCROLL REVEALS ─── */
+    [data-reveal] {
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-reveal].is-hidden {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+    [data-reveal][data-delay="1"].is-hidden { transition-delay: 0.08s; }
+    [data-reveal][data-delay="2"].is-hidden { transition-delay: 0.16s; }
+    [data-reveal][data-delay="3"].is-hidden { transition-delay: 0.24s; }
+    [data-reveal][data-delay="4"].is-hidden { transition-delay: 0.32s; }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-text { animation: fadeUp 0.65s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .tool-card { animation: fadeUp 0.65s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-text, .tool-card { animation: none; opacity: 1; transform: none; }
+      .progress-bar { transition: none; }
+      .spinner { animation: none; border-color: var(--border-dark); border-top-color: var(--ink); }
+      [data-reveal].is-hidden { opacity: 1; transform: none; transition: none; }
+      .faq-answer { transition: none; }
+      .hero-badge::before { animation: none; }
+      .marquee-inner { animation: none; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      .faq-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .faq-header { position: static; }
+    }
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding-top: 48px;
+        padding-bottom: 48px;
+        min-height: auto;
+        gap: 36px;
+      }
+      .hero-text { padding: 0; }
+      .steps { grid-template-columns: 1fr 1fr; }
+      .step { border-bottom: 1px solid var(--border); }
+      .step:nth-child(even) { border-right: none; }
+      .step:nth-last-child(-n+2) { border-bottom: none; }
+    }
+    @media (max-width: 560px) {
+      .nav-links { display: none; }
+      .nav-github { display: none; }
+      .nav-hamburger { display: flex; }
+      h1 { font-size: clamp(2.4rem, 8vw, 3rem); }
+      .step-num { font-size: 4.5rem; }
+      .steps { grid-template-columns: 1fr; }
+      .step { border-right: none; }
+      .step:last-child { border-bottom: none; }
+      .usecase-item { grid-template-columns: 48px 1fr; gap: 0 24px; }
+      .oss-stats { gap: 36px; }
+      .oss-section .section-title { font-size: 2.4rem; }
+    }
+    @media (max-width: 620px) {
+      .removes-grid { grid-template-columns: 1fr; }
+      .remove-item:nth-child(odd) { border-right: none; padding-right: 0; }
+      .remove-item:nth-child(even) { padding-left: 0; }
+    }
+    /* ─── USE CASES ─── */
+    .usecases-section {
+      border-top: 1px solid var(--border);
+    }
+    .usecases-list {
+      list-style: none;
+      margin-top: 56px;
+      border-top: 1px solid var(--border-dark);
+    }
+    .usecase-item {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 0 44px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+      transition: background 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .usecase-num {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--amber);
+      line-height: 1;
+      padding-top: 3px;
+    }
+    .usecase-body { flex: 1; }
+    h3.usecase-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .usecase-desc {
+      font-size: 0.875rem;
+      color: var(--ink-light);
+      line-height: 1.65;
+      font-weight: 300;
+      max-width: 560px;
+    }
+
+    /* ─── DISCLAIMER ─── */
+    .disclaimer-section {
+      background: var(--paper);
+      border-top: 1px solid var(--border);
+    }
+    .disclaimer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-top: 48px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .disclaimer-col {
+      padding: 32px 36px;
+    }
+    .disclaimer-col:first-child {
+      background: rgba(74,222,128,0.10);
+    }
+    .disclaimer-col:last-child {
+      background: rgba(248,113,113,0.10);
+    }
+    .disclaimer-sub {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .disclaimer-col:first-child .disclaimer-sub { color: var(--green); }
+    .disclaimer-col:last-child .disclaimer-sub { color: var(--red); }
+    .disclaimer-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .disclaimer-list li {
+      font-size: 0.83rem;
+      color: var(--ink-light);
+      line-height: 1.55;
+      font-weight: 300;
+      padding-left: 20px;
+      position: relative;
+    }
+    .disclaimer-list--good li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .disclaimer-list--bad li::before {
+      content: '✗';
+      position: absolute;
+      left: 0;
+      color: var(--red);
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 760px) {
+      .disclaimer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to content</a>
+
+<!-- NAV -->
+<nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Clean<span>Meta</span>DATA</a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#what-we-remove">What we strip</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="content-credentials.html">C2PA Checker</a></li>
+    </ul>
+    <a href="https://github.com/uxtyna/clean-metadata" class="nav-github" target="_blank" rel="noopener">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+    <button class="nav-hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <a href="#how-it-works">How it works</a>
+    <a href="#what-we-remove">What we strip</a>
+    <a href="#faq">FAQ</a>
+    <a href="content-credentials.html">C2PA Checker</a>
+    <a href="https://github.com/uxtyna/clean-metadata" target="_blank" rel="noopener">View on GitHub</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<main id="main-content">
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">100% client-side · open source · free forever</div>
+    <h1>Free Metadata Cleaner &amp; <em>AI Tag Remover</em></h1>
+    <p class="hero-sub">
+      Strip EXIF, GPS, XMP, IPTC, C2PA credentials, and AI generator signatures from your images. Everything runs in your browser; your files never leave your device.
+    </p>
+    <div class="hero-facts">
+      <span class="fact-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        No upload
+      </span>
+      <span class="fact-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        No signup
+      </span>
+      <span class="fact-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        No paywall
+      </span>
+      <span class="fact-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        Open source
+      </span>
+    </div>
+  </div>
+
+  <!-- TOOL CARD -->
+  <div class="tool-card">
+    <div class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" />
+      <div class="drop-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8c8878" stroke-width="1.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/>
+          <line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <div class="drop-title">Drop your image here</div>
+      <div class="drop-sub">or click to browse files</div>
+      <div class="drop-formats">JPG · PNG · WebP · HEIC &nbsp;·&nbsp; up to 30 MB</div>
+    </div>
+
+    <!-- Processing -->
+    <div id="processing-panel">
+      <div class="file-row" id="file-row-proc">
+        <img id="proc-thumb" class="file-thumb" src="" alt="" />
+        <div class="file-info">
+          <div class="file-name" id="proc-name">—</div>
+          <div class="file-size" id="proc-size">—</div>
+        </div>
+        <div class="spinner"></div>
+      </div>
+      <div class="progress-wrap"><div class="progress-bar" id="progress-bar"></div></div>
+      <div id="proc-stage" style="font-size:0.72rem;color:var(--ink-faint);margin-top:6px;text-align:right;">Reading metadata…</div>
+    </div>
+
+    <!-- Result -->
+    <div id="result-panel">
+      <div class="file-row">
+        <img id="res-thumb" class="file-thumb" src="" alt="" />
+        <div class="file-info">
+          <div class="file-name" id="res-name">—</div>
+          <div class="file-size" id="res-size">—</div>
+        </div>
+        <span class="status-badge done">Clean ✓</span>
+      </div>
+
+      <!-- Metadata found -->
+      <div id="meta-found-wrap" class="meta-preview">
+        <div class="meta-preview-header">
+          <span class="meta-preview-title">Privacy data removed</span>
+          <span class="meta-count" id="meta-count-badge">0 risks</span>
+        </div>
+        <div id="meta-cards" class="meta-cards"></div>
+        <details class="meta-raw-details" id="meta-raw-details">
+          <summary>Show raw fields</summary>
+          <table class="meta-table" id="meta-table"><tbody></tbody></table>
+        </details>
+      </div>
+
+      <!-- Clean summary -->
+      <div class="clean-summary" id="clean-summary" style="display:none">
+        <div class="clean-summary-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="clean-summary-text" id="clean-summary-text">Image was already clean. No metadata found.</div>
+      </div>
+
+      <a id="download-btn" class="btn-download" href="#" download>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download clean image
+      </a>
+      <button class="btn-reset" id="reset-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.81"/></svg>
+        Clean another image
+      </button>
+    </div>
+
+    <!-- Error state -->
+    <div id="error-panel">
+      <div class="error-row">
+        <div class="error-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div>
+          <div class="error-title" id="error-title">Could not process file</div>
+          <div class="error-desc" id="error-desc">Try a different image.</div>
+        </div>
+      </div>
+      <button class="btn-reset" id="error-reset-btn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.81"/></svg>
+        Try another file
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE STRIP -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-inner">
+    <span>EXIF</span><span class="marquee-sep"> · </span>
+    <span>GPS Coordinates</span><span class="marquee-sep"> · </span>
+    <span>C2PA Credentials</span><span class="marquee-sep"> · </span>
+    <span>XMP History</span><span class="marquee-sep"> · </span>
+    <span>IPTC Data</span><span class="marquee-sep"> · </span>
+    <span>Stable Diffusion</span><span class="marquee-sep"> · </span>
+    <span>MidJourney</span><span class="marquee-sep"> · </span>
+    <span>DALL·E</span><span class="marquee-sep"> · </span>
+    <span>Adobe Firefly</span><span class="marquee-sep"> · </span>
+    <span>Camera Serial</span><span class="marquee-sep"> · </span>
+    <span>Timestamps</span><span class="marquee-sep"> · </span>
+    <span>Lens Data</span><span class="marquee-sep"> · </span>
+    <span>Geotags</span><span class="marquee-sep"> · </span>
+    <span>Perceptual Hash</span><span class="marquee-sep"> · </span>
+    <span>ComfyUI</span><span class="marquee-sep"> · </span>
+    <span>Copyright Info</span><span class="marquee-sep"> · </span>
+    <span>EXIF</span><span class="marquee-sep"> · </span>
+    <span>GPS Coordinates</span><span class="marquee-sep"> · </span>
+    <span>C2PA Credentials</span><span class="marquee-sep"> · </span>
+    <span>XMP History</span><span class="marquee-sep"> · </span>
+    <span>IPTC Data</span><span class="marquee-sep"> · </span>
+    <span>Stable Diffusion</span><span class="marquee-sep"> · </span>
+    <span>MidJourney</span><span class="marquee-sep"> · </span>
+    <span>DALL·E</span><span class="marquee-sep"> · </span>
+    <span>Adobe Firefly</span><span class="marquee-sep"> · </span>
+    <span>Camera Serial</span><span class="marquee-sep"> · </span>
+    <span>Timestamps</span><span class="marquee-sep"> · </span>
+    <span>Lens Data</span><span class="marquee-sep"> · </span>
+    <span>Geotags</span><span class="marquee-sep"> · </span>
+    <span>Perceptual Hash</span><span class="marquee-sep"> · </span>
+    <span>ComfyUI</span><span class="marquee-sep"> · </span>
+    <span>Copyright Info</span><span class="marquee-sep"> · </span>
+  </div>
+</div>
+
+<!-- WHAT WE REMOVE -->
+<section class="removes-section" id="what-we-remove">
+  <h2 class="section-title" data-reveal>What our metadata cleaner <em>removes</em></h2>
+  <p class="section-sub" data-reveal data-delay="1">Every metadata standard used by cameras, phones, and AI generators: EXIF, GPS, XMP, IPTC, C2PA, and more.</p>
+  <ul class="removes-grid" data-reveal data-delay="2">
+    <li class="remove-item">
+      <span class="remove-tag tag-exif">EXIF</span>
+      <div class="remove-name">Camera & Device Data</div>
+      <div class="remove-desc">Camera model, lens, ISO, aperture, shutter speed, software version, device serial numbers, and timestamps.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-gps-badge">GPS</span>
+      <div class="remove-name">Location & Geotags</div>
+      <div class="remove-desc">GPS coordinates, altitude, and embedded location data added automatically by phones and modern cameras.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-xmp">XMP</span>
+      <div class="remove-name">Editing History</div>
+      <div class="remove-desc">Adobe XMP metadata including full editing history, software used, colour profile, and workflow data.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-iptc">IPTC</span>
+      <div class="remove-name">Author & Copyright</div>
+      <div class="remove-desc">Creator name, email, copyright, keywords, captions, and categorisation data from the IPTC standard.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-c2pa">C2PA</span>
+      <div class="remove-name">Content Credentials</div>
+      <div class="remove-desc">Adobe's provenance standard that triggers "Made with AI" labels on Instagram, Facebook, and Pinterest.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-sd">PNG Chunks</span>
+      <div class="remove-name">Stable Diffusion Settings</div>
+      <div class="remove-desc">Generation parameters embedded in PNG files by Automatic1111, ComfyUI, and Forge: prompts, seed, CFG scale, sampler, and model hash.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-ai">AI Signatures</span>
+      <div class="remove-name">Generator Fingerprints</div>
+      <div class="remove-desc">Embedded signatures from DALL-E, MidJourney, Adobe Firefly, and other AI image tools.</div>
+    </li>
+    <li class="remove-item">
+      <span class="remove-tag tag-hash">Hash</span>
+      <div class="remove-name">Digital Fingerprint</div>
+      <div class="remove-desc">Invisible shifts to individual pixel values change the file's unique fingerprint, disrupting reverse-image search and duplicate detection.</div>
+    </li>
+  </ul>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how-section" id="how-it-works">
+  <h2 class="section-title" data-reveal>How to <em>remove</em> metadata from images</h2>
+  <p class="section-sub" data-reveal data-delay="1">Four steps, all running locally in your browser. Nothing is sent to a server, ever.</p>
+  <div class="steps" data-reveal data-delay="2">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">File stays on your device</div>
+      <div class="step-desc">Your image is read directly into browser memory. Nothing is sent over the internet at any step.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">All metadata removed</div>
+      <div class="step-desc">The image is redrawn from raw pixels and saved as a fresh file. All embedded metadata is discarded in the process.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Fingerprint randomized</div>
+      <div class="step-desc">A handful of pixels are shifted by 1–2 color values, invisible to the eye but enough to change the file's unique fingerprint and break reverse-image search.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Clean download</div>
+      <div class="step-desc">Your clean image is ready to save. After you download it, all image data is deleted from your browser automatically.</div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="usecases-section" id="use-cases">
+  <h2 class="section-title" data-reveal>Who <em>uses</em> this tool</h2>
+  <p class="section-sub" data-reveal data-delay="1">From AI creators cleaning images before posting to privacy-conscious users stripping location data from photos they share online.</p>
+  <ol class="usecases-list" data-reveal data-delay="2">
+    <li class="usecase-item">
+      <span class="usecase-num">01</span>
+      <div class="usecase-body">
+        <h3 class="usecase-title">Digital Artists &amp; AI Creators</h3>
+        <p class="usecase-desc">Remove AI signatures from DALL-E, MidJourney, and Stable Diffusion images before sharing on social platforms. Prevents "Made with AI" labels from appearing automatically.</p>
+      </div>
+    </li>
+    <li class="usecase-item">
+      <span class="usecase-num">02</span>
+      <div class="usecase-body">
+        <h3 class="usecase-title">Social Media Managers</h3>
+        <p class="usecase-desc">Prepare AI-generated content for Pinterest, Instagram, and Facebook without triggering AI detection. Remove C2PA credentials that cause automatic labelling.</p>
+      </div>
+    </li>
+    <li class="usecase-item">
+      <span class="usecase-num">03</span>
+      <div class="usecase-body">
+        <h3 class="usecase-title">Print-on-Demand Sellers</h3>
+        <p class="usecase-desc">Clean metadata from AI artwork before uploading to Etsy, Amazon Merch, or Redbubble. Removes Stable Diffusion prompts and model hashes embedded in PNG files.</p>
+      </div>
+    </li>
+    <li class="usecase-item">
+      <span class="usecase-num">04</span>
+      <div class="usecase-body">
+        <h3 class="usecase-title">Bloggers &amp; Content Marketers</h3>
+        <p class="usecase-desc">Use AI-generated images in articles without embedded metadata revealing their origins. Strip image hash fingerprints to bypass reverse-image duplicate detection.</p>
+      </div>
+    </li>
+    <li class="usecase-item">
+      <span class="usecase-num">05</span>
+      <div class="usecase-body">
+        <h3 class="usecase-title">Businesses &amp; Agencies</h3>
+        <p class="usecase-desc">Ensure AI-generated deliverables are clean of generator signatures, editing history, and workflow metadata before client distribution or publication.</p>
+      </div>
+    </li>
+    <li class="usecase-item">
+      <span class="usecase-num">06</span>
+      <div class="usecase-body">
+        <h3 class="usecase-title">Privacy-Conscious Users</h3>
+        <p class="usecase-desc">Remove GPS coordinates and camera serial numbers from photos before sharing online. EXIF geotags in vacation photos can expose your home address to anyone who downloads them.</p>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-layout">
+  <div class="faq-header" data-reveal>
+    <h2 class="section-title">Frequently asked questions</h2>
+    <p class="section-sub">Answers to common questions about how CleanMetaDATA works and what it can do.</p>
+  </div>
+  <div class="faq-list" data-reveal data-delay="1">
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-1">Does my image actually leave my device? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-1">No. Everything happens inside your browser tab. We have no server that receives your images; the code is open source and you can verify this yourself on GitHub.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-2">Will this remove the "Made with AI" label on Instagram? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-2">CleanMetaDATA removes the C2PA Content Credentials and AI software tags that trigger the label. However, platforms update their detection without notice and some (like Instagram) can also detect AI content visually. There's no guarantee, but removing metadata is the correct first step.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-3">Can it remove Google SynthID watermarks? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-3">No. SynthID and similar invisible watermarks are embedded directly into pixel values; they are not metadata. No metadata cleaner can remove them, including ours. We're transparent about this limitation.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-4">Does processing reduce image quality? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-4">JPEG images are saved at 92% quality, which is visually identical to the original in nearly all cases. PNG files are exported without any quality loss. The pixel changes used for fingerprint alteration are a maximum of 2 color values per pixel; completely imperceptible.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-5">How is this different from other metadata removers? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-5">Most tools only strip EXIF data. CleanMetaDATA also removes C2PA content credentials, Stable Diffusion generation settings embedded in PNG files (from Automatic1111, ComfyUI, and Forge), and alters the image's digital fingerprint. All without a server, account, or paywall.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-6">Is this really free? What's the catch? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-6">Completely free, no limits, no account required. The project is MIT-licensed and hosted on GitHub Pages. There is no catch: we built this because we needed it and wanted to share it.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" aria-expanded="false" aria-controls="faq-a-7">What formats are supported? <span class="faq-icon" aria-hidden="true">+</span></button>
+      <div class="faq-answer" id="faq-a-7">JPG/JPEG, PNG, WebP, and HEIC (iPhone photos). HEIC files are converted in your browser before processing. AVIF support is planned.</div>
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<section class="disclaimer-section" id="disclaimer">
+  <div class="section-label">Transparency</div>
+  <h2 class="section-title" data-reveal>What this tool <em>can't</em> do</h2>
+  <div class="disclaimer-grid" data-reveal data-delay="1">
+    <div class="disclaimer-col">
+      <h3 class="disclaimer-sub">What CleanMetaDATA does</h3>
+      <ul class="disclaimer-list disclaimer-list--good">
+        <li>Removes embedded metadata: EXIF camera data, GPS location, timestamps, XMP and IPTC tags</li>
+        <li>Strips AI generation markers including C2PA Content Credentials and AI software tags</li>
+        <li>Alters the image's perceptual fingerprint to disrupt reverse-image search and duplicate matching</li>
+        <li>Runs entirely in your browser. Images are never uploaded to or stored on any server.</li>
+      </ul>
+    </div>
+    <div class="disclaimer-col">
+      <h3 class="disclaimer-sub">What it can't do</h3>
+      <ul class="disclaimer-list disclaimer-list--bad">
+        <li>Cannot remove invisible watermarks such as Google's SynthID. Those are baked into pixels, not metadata.</li>
+        <li>Cannot change how a platform's visual AI detection analyzes the image itself</li>
+        <li>Cannot guarantee a specific result on Pinterest, Instagram, or any platform. Detection algorithms update without notice.</li>
+        <li>Cannot undo a label a platform has already applied to a previously uploaded image</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- OSS CTA -->
+<section class="oss-section">
+  <h2 class="section-title">Built in public.<br /><em>Free forever.</em></h2>
+  <p class="section-sub">MIT-licensed and hosted on GitHub. No data collection, no ads, no paywalls. Star it, fork it, contribute to it.</p>
+  <div class="oss-buttons">
+    <a href="https://github.com/uxtyna/clean-metadata" class="btn-oss-primary" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      View on GitHub
+    </a>
+    <a href="https://github.com/uxtyna/clean-metadata/issues" class="btn-oss-secondary" target="_blank" rel="noopener">Report an issue</a>
+  </div>
+  <div class="oss-stats">
+    <div>
+      <div class="oss-stat-num">0 bytes</div>
+      <div class="oss-stat-label">ever sent to a server</div>
+    </div>
+    <div>
+      <div class="oss-stat-num">8 types</div>
+      <div class="oss-stat-label">of metadata stripped</div>
+    </div>
+    <div>
+      <div class="oss-stat-num">100%</div>
+      <div class="oss-stat-label">runs in your browser</div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Clean<span>Meta</span>DATA</div>
+  <div class="footer-links">
+    <a href="https://github.com/uxtyna/clean-metadata" target="_blank">GitHub</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="footer-copy">MIT License · No tracking · No servers</div>
+</footer>
+
+<script>
+const fileInput   = document.getElementById('fileInput');
+const dropZone    = document.getElementById('dropZone');
+const procPanel   = document.getElementById('processing-panel');
+const resultPanel = document.getElementById('result-panel');
+const errorPanel  = document.getElementById('error-panel');
+
+function showIdle() {
+  dropZone.style.display    = '';
+  procPanel.style.display   = 'none';
+  resultPanel.style.display = 'none';
+  errorPanel.style.display  = 'none';
+  fileInput.value = '';
+}
+
+function setStage(pct, label) {
+  const bar = document.getElementById('progress-bar');
+  const stg = document.getElementById('proc-stage');
+  if (bar) bar.style.width = pct + '%';
+  if (stg) stg.textContent = label;
+}
+
+function showError(title, desc) {
+  dropZone.style.display    = 'none';
+  procPanel.style.display   = 'none';
+  resultPanel.style.display = 'none';
+  errorPanel.style.display  = 'block';
+  document.getElementById('error-title').textContent = title;
+  document.getElementById('error-desc').textContent  = desc;
+}
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) processFile(file);
+});
+fileInput.addEventListener('change', e => {
+  if (e.target.files[0]) processFile(e.target.files[0]);
+});
+
+document.getElementById('reset-btn').addEventListener('click', showIdle);
+document.getElementById('error-reset-btn').addEventListener('click', showIdle);
+
+function formatBytes(n) {
+  if (n < 1024) return n + ' B';
+  if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+  return (n / 1048576).toFixed(2) + ' MB';
+}
+
+function clamp(v) { return Math.max(0, Math.min(255, v)); }
+
+function applyPixelNoise(ctx, w, h) {
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const d = imgData.data;
+  for (let i = 0; i < d.length; i += 4) {
+    if (Math.random() < 0.04) {
+      const delta = () => Math.floor(Math.random() * 3) - 1;
+      d[i]     = clamp(d[i]     + delta());
+      d[i + 1] = clamp(d[i + 1] + delta());
+      d[i + 2] = clamp(d[i + 2] + delta());
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+}
+
+const STRUCTURAL_KEYS = new Set([
+  'ImageWidth','ImageHeight','BitDepth','ColorType','Compression',
+  'Filter','Interlace','PixelXDimension','PixelYDimension',
+  'XResolution','YResolution','ResolutionUnit','Orientation',
+  'ExifImageWidth','ExifImageHeight','ThumbnailOffset','ThumbnailLength',
+  'JPEGInterchangeFormat','JPEGInterchangeFormatLength',
+]);
+
+function filterStructural(meta) {
+  const out = {};
+  for (const [k, v] of Object.entries(meta)) {
+    if (k.startsWith('_') || (!STRUCTURAL_KEYS.has(k) && v !== undefined && v !== null && v !== '')) out[k] = v;
+  }
+  return out;
+}
+
+function truncateVal(val) {
+  const s = String(val);
+  return s.length > 80 ? s.slice(0, 77) + '…' : s;
+}
+
+function friendlyKey(key) {
+  const map = {
+    Make:'Camera make', Model:'Camera model', Software:'Software',
+    DateTime:'Date & time', DateTimeOriginal:'Date taken', CreateDate:'Date created',
+    GPSLatitude:'GPS Latitude', GPSLongitude:'GPS Longitude', GPSAltitude:'GPS Altitude',
+    GPSLatitudeRef:'GPS Lat ref', GPSLongitudeRef:'GPS Lng ref',
+    Artist:'Artist/Author', Copyright:'Copyright', Creator:'Creator',
+    ImageDescription:'Description', UserComment:'User comment',
+    Flash:'Flash', FocalLength:'Focal length', FNumber:'F-number',
+    ExposureTime:'Exposure', ISOSpeedRatings:'ISO', WhiteBalance:'White balance',
+    LensModel:'Lens model', LensMake:'Lens make',
+    SerialNumber:'Serial number', BodySerialNumber:'Body serial',
+  };
+  return map[key] || key;
+}
+
+function formatExposure(val) {
+  if (typeof val === 'number' && val < 1) return `1/${Math.round(1/val)}s`;
+  return val ? `${val}s` : '';
+}
+
+function formatGpsCoord(val, ref) {
+  if (Array.isArray(val)) {
+    const [d, m, s] = val;
+    return `${d}° ${m}′ ${s ? s.toFixed(1) + '″' : ''}${ref ? ' ' + ref : ''}`;
+  }
+  if (typeof val === 'number') return `${val.toFixed(5)}${ref ? ' ' + ref : ''}`;
+  return String(val);
+}
+
+function categorizeMetadata(meta) {
+  const cards = [];
+  const keys  = Object.keys(meta);
+
+  const hasGps = keys.some(k => k.toLowerCase().startsWith('gps') && !['GPSVersionID'].includes(k));
+  if (hasGps) {
+    const lat = meta.GPSLatitude, lng = meta.GPSLongitude, alt = meta.GPSAltitude;
+    let desc = 'Exact GPS coordinates were embedded — latitude, longitude';
+    if (alt !== undefined) desc += ` and altitude (${Math.round(alt)}m)`;
+    desc += ' visible to anyone with the file.';
+    if (lat && lng) {
+      desc += ` Coordinates: ${formatGpsCoord(lat, meta.GPSLatitudeRef)}, ${formatGpsCoord(lng, meta.GPSLongitudeRef)}.`;
+    }
+    cards.push({ icon: '📍', title: 'Location data found', desc, sev: 'high' });
+  }
+
+  const aiKw = ['parameters','prompt','negativeprompt','seed','cfgscale','sampler','workflow','ai_tool','generator'];
+  const aiFields = keys.filter(k => aiKw.some(kw => k.toLowerCase().includes(kw)));
+  if (aiFields.length > 0) {
+    const sample = meta[aiFields[0]];
+    const preview = typeof sample === 'string' && sample.length > 0
+      ? ' Preview: "' + sample.slice(0, 80) + (sample.length > 80 ? '…' : '') + '"'
+      : '';
+    cards.push({ icon: '🤖', title: 'AI generation data found',
+      desc: 'Prompt, seed and model parameters were embedded — revealing this image was AI-generated.' + preview,
+      sev: 'high' });
+  }
+
+  const hasC2pa = meta._c2pa_detected ||
+    keys.some(k => /c2pa|contentcred|provenance/i.test(k));
+  if (hasC2pa) {
+    cards.push({ icon: '🔏', title: 'Content Credentials found',
+      desc: 'A C2PA provenance signature was embedded — this triggers "Made with AI" labels on social platforms and reveals the creation tool.',
+      sev: 'med' });
+  }
+
+  const hasCamera = meta.Make || meta.Model || meta.LensModel || meta.SerialNumber || meta.BodySerialNumber;
+  if (hasCamera) {
+    const parts = [];
+    if (meta.Make && meta.Model) parts.push(`Shot on ${meta.Make} ${meta.Model}`);
+    else if (meta.Model) parts.push(`Camera: ${meta.Model}`);
+    if (meta.FNumber)        parts.push(`f/${meta.FNumber}`);
+    if (meta.ExposureTime)   parts.push(formatExposure(meta.ExposureTime));
+    if (meta.ISOSpeedRatings) parts.push(`ISO ${meta.ISOSpeedRatings}`);
+    if (meta.FocalLength)    parts.push(`${meta.FocalLength}mm`);
+    if (meta.DateTimeOriginal) {
+      const d = new Date(meta.DateTimeOriginal);
+      if (!isNaN(d)) parts.push(d.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }));
+    }
+    if (meta.SerialNumber || meta.BodySerialNumber) parts.push('serial number present');
+    cards.push({ icon: '📷', title: 'Device fingerprint found',
+      desc: parts.join(' · ') || 'Camera make, model or lens data were present.',
+      sev: 'med' });
+  }
+
+  const hasAuthor = meta.Artist || meta.Copyright || meta.Creator || meta['dc:creator'] || meta.Author;
+  if (hasAuthor) {
+    const who = meta.Artist || meta.Creator || meta.Author || meta['dc:creator'] || meta.Copyright;
+    cards.push({ icon: '©', title: 'Author metadata found',
+      desc: `Creator name or copyright info was embedded${who ? ': ' + truncateVal(String(who)) : ''}.`,
+      sev: 'low' });
+  }
+
+  if (meta.Software && !hasCamera) {
+    cards.push({ icon: '🖥️', title: 'Editing software found',
+      desc: `${truncateVal(String(meta.Software))} — full editing history was present.`,
+      sev: 'low' });
+  } else if (meta.Software && hasCamera) {
+    const camCard = cards.find(c => c.title === 'Device fingerprint found');
+    if (camCard) camCard.desc += ` · Processed in ${truncateVal(String(meta.Software))}`;
+  }
+
+  if (!hasCamera && !hasAuthor && (meta.DateTime || meta.DateTimeOriginal || meta.CreateDate)) {
+    const raw = meta.DateTime || meta.DateTimeOriginal || meta.CreateDate;
+    cards.push({ icon: '🕐', title: 'Timestamp found',
+      desc: `Creation date was embedded: ${raw}`,
+      sev: 'low' });
+  }
+
+  return cards;
+}
+
+// exifr cannot read JUMBF boxes — scan raw bytes for the 'c2pa' ASCII marker instead
+async function detectC2paBytes(file) {
+  try {
+    const chunk = await file.slice(0, Math.min(file.size, 200 * 1024)).arrayBuffer();
+    const bytes = new Uint8Array(chunk);
+    for (let i = 0; i < bytes.length - 4; i++) {
+      if (bytes[i]===0x63 && bytes[i+1]===0x32 && bytes[i+2]===0x70 && bytes[i+3]===0x61) return true;
+    }
+    const text = new TextDecoder('latin1').decode(bytes);
+    return text.includes('caBX') || text.includes('jumbf') || text.includes('JUMBF');
+  } catch { return false; }
+}
+
+async function readMetadata(file) {
+  const all = typeof exifr !== 'undefined'
+    ? (await exifr.parse(file, { exif:true, gps:true, xmp:true, iptc:true, tiff:true, ifd0:true, ifd1:false }).catch(() => null) || {})
+    : {};
+  if (await detectC2paBytes(file)) all._c2pa_detected = true;
+  return all;
+}
+
+async function toJpegBlob(file) {
+  const isHeic = /heic|heif/i.test(file.type) || /\.(heic|heif)$/i.test(file.name);
+  if (isHeic) {
+    if (typeof heic2any === 'undefined') throw new Error('heic2any not loaded');
+    const converted = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 });
+    return Array.isArray(converted) ? converted[0] : converted;
+  }
+  return file;
+}
+
+async function processFile(file) {
+  if (file.size > 30 * 1024 * 1024) {
+    showError('File is too large', 'The maximum size is 30 MB. Please try a smaller or more compressed image.');
+    return;
+  }
+  const accepted = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+  if (!accepted.includes(file.type) && !/\.(jpe?g|png|webp|heic|heif)$/i.test(file.name)) {
+    showError('Format not supported', 'This file type isn\'t supported. Please use JPG, PNG, WebP, or HEIC.');
+    return;
+  }
+
+  dropZone.style.display  = 'none';
+  procPanel.style.display = 'block';
+  resultPanel.style.display = 'none';
+  errorPanel.style.display = 'none';
+
+  document.getElementById('proc-name').textContent = file.name;
+  document.getElementById('proc-size').textContent = formatBytes(file.size) + ' · original';
+
+  const thumbUrlProc = URL.createObjectURL(file);
+  document.getElementById('proc-thumb').src = thumbUrlProc;
+
+  try {
+    setStage(15, 'Reading metadata…');
+    const meta = await readMetadata(file);
+
+    setStage(35, 'Removing metadata…');
+    const workBlob = await toJpegBlob(file);
+    const bitmap = await createImageBitmap(workBlob);
+    const canvas = document.createElement('canvas');
+    canvas.width  = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(bitmap, 0, 0);
+    bitmap.close();
+
+    setStage(65, 'Altering fingerprint…');
+    applyPixelNoise(ctx, canvas.width, canvas.height);
+
+    setStage(88, 'Preparing download…');
+    const outputType = /png/i.test(file.type) ? 'image/png' : 'image/jpeg';
+    const quality    = outputType === 'image/jpeg' ? 0.92 : undefined;
+
+    const cleanBlob = await new Promise(resolve =>
+      canvas.toBlob(resolve, outputType, quality)
+    );
+
+    const cleanUrl   = URL.createObjectURL(cleanBlob);
+    const cleanName  = file.name.replace(/\.(jpe?g|png|webp|heic|heif)$/i, '') + '_clean.'
+                     + (outputType === 'image/png' ? 'png' : 'jpg');
+
+    document.getElementById('res-thumb').src  = cleanUrl;
+    document.getElementById('res-name').textContent = cleanName;
+    document.getElementById('res-size').textContent = formatBytes(cleanBlob.size) + ' · clean';
+
+    const dlBtn = document.getElementById('download-btn');
+    dlBtn.href     = cleanUrl;
+    dlBtn.download = cleanName;
+
+    const filtered = filterStructural(meta);
+    const cards    = categorizeMetadata(filtered);
+    const rawKeys  = Object.keys(filtered);
+
+    const cardsEl    = document.getElementById('meta-cards');
+    const tbody      = document.querySelector('#meta-table tbody');
+    const rawDetails = document.getElementById('meta-raw-details');
+    cardsEl.innerHTML = '';
+    tbody.innerHTML   = '';
+
+    if (cards.length > 0) {
+      document.getElementById('meta-found-wrap').style.display = '';
+      document.getElementById('clean-summary').style.display   = 'none';
+      document.getElementById('meta-count-badge').textContent  = cards.length + (cards.length === 1 ? ' risk' : ' risks');
+      document.getElementById('meta-count-badge').className    = 'meta-count';
+
+      cards.forEach(({ icon, title, desc, sev }) => {
+        const el = document.createElement('div');
+        el.className = `meta-highlight-card${sev === 'high' ? ' sev-high' : sev === 'med' ? ' sev-med' : ''}`;
+        el.innerHTML = `
+          <span class="meta-card-icon" aria-hidden="true">${icon}</span>
+          <div>
+            <div class="meta-card-title${sev === 'high' ? ' sev-high' : sev === 'med' ? ' sev-med' : ''}">${title}</div>
+            <div class="meta-card-desc">${desc}</div>
+          </div>`;
+        cardsEl.appendChild(el);
+      });
+
+      const displayKeys = rawKeys.filter(k => !k.startsWith('_'));
+      if (displayKeys.length > 0) {
+        rawDetails.style.display = '';
+        displayKeys.slice(0, 30).forEach(k => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${friendlyKey(k)}</td><td>${truncateVal(filtered[k])}</td>`;
+          tbody.appendChild(tr);
+        });
+        if (displayKeys.length > 30) {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td colspan="2" style="color:var(--ink-faint);text-align:center;padding:8px 14px;font-size:0.72rem">… and ${displayKeys.length - 30} more fields</td>`;
+          tbody.appendChild(tr);
+        }
+      } else {
+        rawDetails.style.display = 'none';
+      }
+
+    } else if (rawKeys.length > 0) {
+      // Has data but none fits our categories (e.g. only XResolution type fields after structural filter)
+      document.getElementById('meta-found-wrap').style.display = 'none';
+      document.getElementById('clean-summary').style.display   = 'flex';
+      document.getElementById('clean-summary-text').innerHTML  =
+        '<strong>Already clean.</strong> No privacy-sensitive metadata detected. Fingerprint altered.';
+    } else {
+      document.getElementById('meta-found-wrap').style.display = 'none';
+      document.getElementById('clean-summary').style.display   = 'flex';
+      document.getElementById('clean-summary-text').innerHTML  =
+        '<strong>Already clean.</strong> No privacy-sensitive metadata detected. Fingerprint altered.';
+    }
+
+    procPanel.style.display   = 'none';
+    resultPanel.style.display = 'block';
+    if (window.innerWidth < 860) {
+      setTimeout(() => resultPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+    }
+    URL.revokeObjectURL(thumbUrlProc);
+
+  } catch (err) {
+    console.error(err);
+    procPanel.style.display = 'none';
+    const msg = err.message || '';
+    if (/decode|bitmap|source image/i.test(msg)) {
+      showError('File could not be read', 'This format isn\'t supported. Please try JPG, PNG, WebP, or HEIC.');
+    } else if (/heic2any/i.test(msg)) {
+      showError('HEIC conversion failed', 'This HEIC file couldn\'t be converted. Try saving it as JPG from your phone\'s camera app first.');
+    } else {
+      showError('Processing failed', 'This file couldn\'t be processed. Try a different image, or check that it isn\'t corrupted.');
+    }
+    URL.revokeObjectURL(thumbUrlProc);
+  }
+}
+
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    item.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(!isOpen));
+  });
+});
+
+(function () {
+  const hamburger = document.querySelector('.nav-hamburger');
+  const mobileNav = document.getElementById('mobile-nav');
+  if (!hamburger || !mobileNav) return;
+  function closeMobileNav() {
+    hamburger.setAttribute('aria-expanded', 'false');
+    mobileNav.classList.remove('is-open');
+    mobileNav.setAttribute('aria-hidden', 'true');
+  }
+  hamburger.addEventListener('click', () => {
+    const isOpen = hamburger.getAttribute('aria-expanded') === 'true';
+    hamburger.setAttribute('aria-expanded', String(!isOpen));
+    mobileNav.classList.toggle('is-open', !isOpen);
+    mobileNav.setAttribute('aria-hidden', String(isOpen));
+  });
+  mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMobileNav));
+}());
+
+(function () {
+  const els = document.querySelectorAll('[data-reveal]');
+  if (!('IntersectionObserver' in window) || !els.length) return;
+  els.forEach(el => el.classList.add('is-hidden'));
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.remove('is-hidden');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+  els.forEach(el => obs.observe(el));
+}());
+
+// ── Tool card spotlight cursor effect ─────────
+(function () {
+  const card = document.querySelector('.tool-card');
+  if (!card || window.matchMedia('(hover: none)').matches) return;
+  card.addEventListener('mousemove', (e) => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+    card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+  });
+  card.addEventListener('mouseleave', () => {
+    card.style.setProperty('--mx', '-200px');
+    card.style.setProperty('--my', '-200px');
+  });
+}());
+
+// ── Nav scroll indicator ───────────────────────
+(function () {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+  }, { passive: true });
+}());
+</script>
+
+</body>
+</html>
