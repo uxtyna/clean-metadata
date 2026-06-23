@@ -173,6 +173,7 @@
   <!-- Libraries (CDN) -->
   <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/full.umd.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -516,6 +517,18 @@
     /* ─── PROCESSING STATE ─── */
     #processing-panel { display: none; margin-top: 20px; }
     #result-panel { display: none; margin-top: 20px; }
+    #batch-panel { display: none; margin-top: 20px; }
+
+    .info-banner {
+      font-size: 0.8rem;
+      color: var(--amber);
+      background: var(--amber-light);
+      border: 1px solid var(--amber-border);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      line-height: 1.5;
+    }
+    .batch-file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
 
     .file-row {
       display: flex;
@@ -1385,7 +1398,7 @@
   <!-- TOOL CARD -->
   <div class="tool-card">
     <div class="drop-zone" id="dropZone">
-      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" />
+      <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" multiple />
       <div class="drop-icon">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8c8878" stroke-width="1.5">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -1393,9 +1406,9 @@
           <line x1="12" y1="3" x2="12" y2="15"/>
         </svg>
       </div>
-      <div class="drop-title">Drop your image here</div>
+      <div class="drop-title">Drop your image(s) here</div>
       <div class="drop-sub">or click to browse files</div>
-      <div class="drop-formats">JPG · PNG · WebP · HEIC &nbsp;·&nbsp; up to 30 MB</div>
+      <div class="drop-formats">JPG · PNG · WebP · HEIC &nbsp;·&nbsp; up to 30 MB &nbsp;·&nbsp; up to 10 files at once</div>
     </div>
 
     <!-- Processing -->
@@ -1468,6 +1481,24 @@
       <button class="btn-reset" id="error-reset-btn">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.81"/></svg>
         Try another file
+      </button>
+    </div>
+
+    <!-- Batch state (2-10 files) -->
+    <div id="batch-panel">
+      <div class="info-banner">
+        Multiple files selected — individual metadata inspection is skipped for batches. Every image is still fully cleaned (metadata stripped + fingerprint altered) and packaged into one ZIP.
+      </div>
+      <div class="batch-file-list" id="batch-file-list"></div>
+      <div class="progress-wrap"><div class="progress-bar" id="batch-progress-bar"></div></div>
+      <div id="batch-stage" style="font-size:0.72rem;color:var(--ink-faint);margin-top:6px;text-align:right;">Preparing…</div>
+      <a id="batch-download-btn" class="btn-download" href="#" download style="display:none;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download ZIP
+      </a>
+      <button class="btn-reset" id="batch-reset-btn" style="display:none;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.81"/></svg>
+        Clean more images
       </button>
     </div>
   </div>
@@ -1757,13 +1788,19 @@ const dropZone    = document.getElementById('dropZone');
 const procPanel   = document.getElementById('processing-panel');
 const resultPanel = document.getElementById('result-panel');
 const errorPanel  = document.getElementById('error-panel');
+const batchPanel  = document.getElementById('batch-panel');
+
+const MAX_FILES = 10;
+let currentZipUrl = null;
 
 function showIdle() {
   dropZone.style.display    = '';
   procPanel.style.display   = 'none';
   resultPanel.style.display = 'none';
   errorPanel.style.display  = 'none';
+  batchPanel.style.display  = 'none';
   fileInput.value = '';
+  if (currentZipUrl) { URL.revokeObjectURL(currentZipUrl); currentZipUrl = null; }
 }
 
 function setStage(pct, label) {
@@ -1777,9 +1814,23 @@ function showError(title, desc) {
   dropZone.style.display    = 'none';
   procPanel.style.display   = 'none';
   resultPanel.style.display = 'none';
+  batchPanel.style.display  = 'none';
   errorPanel.style.display  = 'block';
   document.getElementById('error-title').textContent = title;
   document.getElementById('error-desc').textContent  = desc;
+}
+
+function handleFiles(files) {
+  if (!files.length) return;
+  if (files.length > MAX_FILES) {
+    showError('Too many files', `You can clean up to ${MAX_FILES} images at once. Please select ${MAX_FILES} or fewer.`);
+    return;
+  }
+  if (files.length === 1) {
+    processFile(files[0]);
+  } else {
+    processBatch(files);
+  }
 }
 
 dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
@@ -1787,15 +1838,15 @@ dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-ove
 dropZone.addEventListener('drop', e => {
   e.preventDefault();
   dropZone.classList.remove('drag-over');
-  const file = e.dataTransfer.files[0];
-  if (file) processFile(file);
+  handleFiles(Array.from(e.dataTransfer.files));
 });
 fileInput.addEventListener('change', e => {
-  if (e.target.files[0]) processFile(e.target.files[0]);
+  handleFiles(Array.from(e.target.files));
 });
 
 document.getElementById('reset-btn').addEventListener('click', showIdle);
 document.getElementById('error-reset-btn').addEventListener('click', showIdle);
+document.getElementById('batch-reset-btn').addEventListener('click', showIdle);
 
 function formatBytes(n) {
   if (n < 1024) return n + ' B';
@@ -2120,6 +2171,110 @@ async function processFile(file) {
     }
     URL.revokeObjectURL(thumbUrlProc);
   }
+}
+
+async function processBatch(files) {
+  const accepted = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+  for (const file of files) {
+    if (file.size > 30 * 1024 * 1024) {
+      showError('File is too large', `"${file.name}" exceeds the 30 MB limit. Please remove it and try again.`);
+      return;
+    }
+    if (!accepted.includes(file.type) && !/\.(jpe?g|png|webp|heic|heif)$/i.test(file.name)) {
+      showError('Format not supported', `"${file.name}" isn't a supported format. Please use JPG, PNG, WebP, or HEIC.`);
+      return;
+    }
+  }
+  if (typeof JSZip === 'undefined') {
+    showError('Could not start ZIP export', 'The ZIP library failed to load. Please refresh the page and try again.');
+    return;
+  }
+
+  dropZone.style.display    = 'none';
+  procPanel.style.display   = 'none';
+  resultPanel.style.display = 'none';
+  errorPanel.style.display  = 'none';
+  batchPanel.style.display  = 'block';
+
+  const listEl = document.getElementById('batch-file-list');
+  listEl.innerHTML = '';
+  const dlBtn    = document.getElementById('batch-download-btn');
+  const resetBtn = document.getElementById('batch-reset-btn');
+  dlBtn.style.display    = 'none';
+  resetBtn.style.display = 'none';
+
+  const badges = files.map(file => {
+    const row = document.createElement('div');
+    row.className = 'file-row';
+    row.innerHTML = `
+      <div class="file-info">
+        <div class="file-name">${file.name}</div>
+        <div class="file-size">${formatBytes(file.size)}</div>
+      </div>
+      <span class="status-badge processing">Pending</span>`;
+    listEl.appendChild(row);
+    return row.querySelector('.status-badge');
+  });
+
+  function setBatchStage(pct, label) {
+    document.getElementById('batch-progress-bar').style.width = pct + '%';
+    document.getElementById('batch-stage').textContent = label;
+  }
+
+  const zip = new JSZip();
+  const usedNames = new Set();
+  let failures = 0;
+
+  for (let i = 0; i < files.length; i++) {
+    const file  = files[i];
+    const badge = badges[i];
+    badge.textContent = 'Cleaning…';
+    setBatchStage(Math.round((i / files.length) * 90), `Cleaning ${i + 1} of ${files.length}…`);
+
+    try {
+      const workBlob = await toJpegBlob(file);
+      const bitmap   = await createImageBitmap(workBlob);
+      const canvas   = document.createElement('canvas');
+      canvas.width   = bitmap.width;
+      canvas.height  = bitmap.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(bitmap, 0, 0);
+      bitmap.close();
+
+      applyPixelNoise(ctx, canvas.width, canvas.height);
+
+      const outputType = /png/i.test(file.type) ? 'image/png' : 'image/jpeg';
+      const quality     = outputType === 'image/jpeg' ? 0.92 : undefined;
+      const cleanBlob = await new Promise(resolve => canvas.toBlob(resolve, outputType, quality));
+
+      let cleanName = file.name.replace(/\.(jpe?g|png|webp|heic|heif)$/i, '') + '_clean.'
+                    + (outputType === 'image/png' ? 'png' : 'jpg');
+      if (usedNames.has(cleanName)) {
+        cleanName = cleanName.replace(/(_clean\.\w+)$/, `_${i + 1}$1`);
+      }
+      usedNames.add(cleanName);
+
+      zip.file(cleanName, cleanBlob);
+      badge.textContent = 'Done ✓';
+      badge.className   = 'status-badge done';
+    } catch (err) {
+      console.error(err);
+      failures++;
+      badge.textContent = 'Failed';
+      badge.className   = 'status-badge error';
+    }
+  }
+
+  setBatchStage(95, 'Building ZIP…');
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  if (currentZipUrl) URL.revokeObjectURL(currentZipUrl);
+  currentZipUrl = URL.createObjectURL(zipBlob);
+  setBatchStage(100, failures ? `Done — ${failures} file(s) failed` : 'Done');
+
+  dlBtn.href         = currentZipUrl;
+  dlBtn.download     = 'clean-images.zip';
+  dlBtn.style.display    = 'flex';
+  resetBtn.style.display = 'flex';
 }
 
 document.querySelectorAll('.faq-question').forEach(btn => {
