@@ -1,3 +1,8 @@
 .DS_Store
 Thumbs.db
 *.log
+
+# Internal planning / working docs — kept local, not part of the public repo
+PRD_CleanMetaDATA.md
+PROMPT_content-credentials.md
+PRODUCT.md
