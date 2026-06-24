@@ -52,8 +52,9 @@ index.html                  Metadata cleaner page (markup only)
 content-credentials.html    C2PA checker page (markup only)
 src/
   styles/
-    index.css               Styles for the cleaner page
-    content-credentials.css Styles for the C2PA checker
+    base.css                Shared styles (reset, nav, footer, sections, FAQ)
+    index.css               Cleaner-page styles + its :root variables
+    content-credentials.css C2PA-checker styles + its :root variables
   scripts/
     index.js                Cleaner logic (canvas re-render, metadata read, batch ZIP)
     content-credentials.js  C2PA verification logic (ES module)
